@@ -16,7 +16,7 @@ function getWsKey(symbol: string): string {
 export function AssetGrid({ assets, loading, wsPrices, onSelectAsset }: AssetGridProps) {
   if (loading) {
     return (
-      <div className="grid gap-4 grid-cols-1 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
         {Array.from({ length: 12 }).map((_, i) => (
           <CardSkeleton key={i} />
         ))}
@@ -25,7 +25,7 @@ export function AssetGrid({ assets, loading, wsPrices, onSelectAsset }: AssetGri
   }
 
   return (
-    <div className="grid gap-4 grid-cols-1 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
       {assets.map((asset, i) => (
         <AssetCard
           key={asset.id}

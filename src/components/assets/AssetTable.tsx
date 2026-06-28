@@ -26,7 +26,7 @@ export function AssetTable({ assets, loading, wsPrices, onSelectAsset }: AssetTa
 
   return (
     <div className="overflow-x-auto rounded-2xl border border-gray-100 bg-white dark:border-gray-800 dark:bg-gray-900">
-      <table className="w-full min-w-150">
+      <table className="w-full min-w-[150px]">
         <thead>
           <tr className="border-b border-gray-100 dark:border-gray-800">
             <th className="w-12 py-3 pl-4 pr-2" />

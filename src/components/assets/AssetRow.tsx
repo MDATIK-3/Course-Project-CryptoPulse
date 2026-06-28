@@ -51,7 +51,7 @@ export function AssetRow({ asset, livePrice, onClick, index }: AssetRowProps) {
       <td className="hidden px-2 py-4 text-right text-sm tabular-nums text-gray-500 dark:text-gray-400 lg:table-cell">
         {formatLargeNumber(asset.total_volume)}
       </td>
-      <td className="hidden w-30 py-4 pl-2 pr-4 xl:table-cell">
+      <td className="hidden w-32 py-4 pl-2 pr-4 xl:table-cell">
         <SparklineChart data={asset.sparkline_in_7d?.price ?? []} />
       </td>
     </tr>
