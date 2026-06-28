@@ -1,7 +1,7 @@
 ````md
 # CryptoPulse
 
-CryptoPulse is a modern cryptocurrency dashboard built with **React**, **TypeScript**, **Vite**, and **Tailwind CSS**. It provides live cryptocurrency market data by combining the CoinGecko REST API with the Kraken WebSocket API for real-time price updates.
+CryptoPulse is a modern cryptocurrency dashboard built with *React*, *TypeScript*, *Vite*, and *Tailwind CSS*. It provides live cryptocurrency market data by combining the CoinGecko REST API with the Kraken WebSocket API for real-time price updates.
 
 ## Features
 
