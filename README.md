@@ -1,71 +1,114 @@
+````md
 # CryptoPulse
 
-CryptoPulse is a modern React + TypeScript dashboard for tracking live cryptocurrency data. It combines a clean responsive UI with CoinGecko market data and a Kraken WebSocket feed for near-real-time price updates.
+CryptoPulse is a modern cryptocurrency dashboard built with **React**, **TypeScript**, **Vite**, and **Tailwind CSS**. It provides live cryptocurrency market data by combining the CoinGecko REST API with the Kraken WebSocket API for real-time price updates.
 
-## Key features
+## Features
 
-- Live feed for active crypto tickers using Kraken WebSocket pricing.
-- CoinGecko market overview for the top assets, including rank, market cap, volume, and 24h performance.
-- Search, sort, and toggle between grid and table views.
-- Favorites management with persistent selection.
-- Interactive asset detail panel with price chart and timeframe switching.
-- Dark mode support via theme context.
+- Live cryptocurrency price updates using the Kraken WebSocket API
+- Market overview powered by the CoinGecko API
+- Search and filter cryptocurrencies
+- Sort assets by market rank, price, market cap, volume, and 24-hour change
+- Toggle between grid and table views
+- Favorites management with persistent local storage
+- Interactive price charts with selectable timeframes
+- Dark mode with theme persistence
+- Fully responsive design
 
-## Architecture
+## Tech Stack
 
-- src/App.tsx: application root with theme and favorites context providers.
-- src/components: reusable UI components for layout, asset listing, charts, filters, and notifications.
-- src/hooks: custom hooks for fetching CoinGecko assets, subscribing to WebSocket prices, handling favorites, asset history, and theme persistence.
-- src/api/coingecko.ts: CoinGecko API integration.
-- src/utils: formatter utilities and API constants.
-- src/types: shared TypeScript definitions.
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS
+- Apache ECharts
+- CoinGecko API
+- Kraken WebSocket API
+
+## Project Structure
+
+```text
+src/
+├── api/
+│   └── coingecko.ts
+├── components/
+├── hooks/
+├── types/
+├── utils/
+└── App.tsx
+````
+
+| Directory     | Description                     |
+| ------------- | ------------------------------- |
+| `api/`        | API integration with CoinGecko  |
+| `components/` | Reusable UI components          |
+| `hooks/`      | Custom React hooks              |
+| `types/`      | Shared TypeScript definitions   |
+| `utils/`      | Utility functions and constants |
+| `App.tsx`     | Application entry point         |
 
 ## Installation
 
-`ash
+Install the project dependencies:
+
+```bash
 npm install
-`
+```
 
-## Development
+## Run the Development Server
 
-`ash
+```bash
 npm run dev
-`
+```
 
-Open the local Vite development server shown in the terminal.
+The application will be available at the local Vite development server shown in the terminal.
 
-## Build
+## Build for Production
 
-`ash
+```bash
 npm run build
-`
+```
 
-## Preview
+## Preview the Production Build
 
-`ash
+```bash
 npm run preview
-`
+```
 
-## Scripts
+## Available Scripts
 
-- 
-pm run dev: start Vite development server.
-- 
-pm run build: compile TypeScript and bundle for production.
-- 
-pm run lint: run ESLint across the project.
-- 
-pm run preview: preview the production build locally.
+| Command           | Description                          |
+| ----------------- | ------------------------------------ |
+| `npm run dev`     | Start the development server         |
+| `npm run build`   | Build the application for production |
+| `npm run preview` | Preview the production build locally |
+| `npm run lint`    | Run ESLint                           |
 
 ## Dependencies
 
-- eact
-- eact-dom
-- echarts
-- 	ailwindcss
-- @tailwindcss/vite
-- @vitejs/plugin-react
+### Core
 
-## Notes
+* React
+* React DOM
+* TypeScript
+* Vite
 
-This project is optimized for modern browsers and leverages Vite, TypeScript, React 19, and Tailwind CSS for fast iteration and polished UI behavior.
+### Styling
+
+* Tailwind CSS
+
+### Charts
+
+* Apache ECharts
+
+### APIs
+
+* CoinGecko REST API
+* Kraken WebSocket API
+
+## License
+
+This project is intended for educational and portfolio purposes.
+
+```
+```
