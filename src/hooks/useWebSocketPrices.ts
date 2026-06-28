@@ -43,7 +43,6 @@ export function useWebSocketPrices(): WebSocketPriceMap {
             });
           }
         } catch {
-          /* ignore parse errors */
         }
       };
 
