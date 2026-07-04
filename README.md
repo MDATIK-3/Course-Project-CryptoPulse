@@ -15,14 +15,13 @@ CryptoPulse is a modern cryptocurrency dashboard built with *React*, *TypeScript
 - Dark mode with theme persistence
 - Fully responsive design
 
-![Home Page](image.png)
+![Home Page](./image.png)
 
-![alt text](image-1.png)
+![Dashboard View](./image-1.png)
 
+![Market Overview](./image-2.png)
 
-![alt text](image-2.png)
-
-![alt text](image-3.png)
+![Charts and Favorites](./image-3.png)
 
 ## Tech Stack
 

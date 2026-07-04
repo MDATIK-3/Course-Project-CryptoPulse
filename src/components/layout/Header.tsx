@@ -14,10 +14,10 @@ const TABS = [
 export function Header({ activeTab, onTabChange }: HeaderProps) {
   return (
     <header className="sticky top-0 z-30 border-b border-gray-200/80 bg-white/70 backdrop-blur-xl dark:border-gray-800 dark:bg-gray-950/70">
-      <div className="mx-auto flex h-16 max-w-[1440px] items-center justify-between px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-8">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-around px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-10">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-bold text-sm shadow-lg shadow-indigo-500/20">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-indigo-500 to-purple-600 text-white font-bold text-sm shadow-lg shadow-indigo-500/20">
               CP
             </div>
             <span className="text-lg font-bold tracking-tight text-gray-900 dark:text-white">
@@ -25,7 +25,7 @@ export function Header({ activeTab, onTabChange }: HeaderProps) {
             </span>
           </div>
 
-          <nav className="hidden items-center gap-1 sm:flex">
+          <nav className="hidden items-center gap-5 sm:flex">
             {TABS.map((tab) => (
               <button
                 key={tab.id}
@@ -38,7 +38,7 @@ export function Header({ activeTab, onTabChange }: HeaderProps) {
               >
                 {tab.label}
                 {activeTab === tab.id && (
-                  <span className="absolute inset-x-1 -bottom-[calc(0.5rem+1px)] h-0.5 rounded-full bg-indigo-600 dark:bg-indigo-400" />
+                  <span className="absolute inset-x-1 -bottom-[9px] h-0.5 rounded-full bg-indigo-600 dark:bg-indigo-400" />
                 )}
               </button>
             ))}
