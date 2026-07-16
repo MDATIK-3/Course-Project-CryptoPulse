@@ -1,12 +1,13 @@
 import { formatPercent } from "../../utils/formatters";
 
 interface PriceChangeProps {
-  value: number;
+  value: number | null | undefined;
   className?: string;
 }
 
 export function PriceChange({ value, className = "" }: PriceChangeProps) {
-  const isPositive = value >= 0;
+  const safeValue = value ?? 0;
+  const isPositive = safeValue >= 0;
 
   return (
     <span

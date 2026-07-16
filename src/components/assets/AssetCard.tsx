@@ -13,7 +13,7 @@ interface AssetCardProps {
 
 export function AssetCard({ asset, livePrice, onClick, index }: AssetCardProps) {
   const price = livePrice?.last ?? asset.current_price;
-  const change = livePrice?.changePercent ?? asset.price_change_percentage_24h;
+  const change = livePrice?.changePercent ?? asset.price_change_percentage_24h ?? 0;
   const isUp = change >= 0;
 
   return (

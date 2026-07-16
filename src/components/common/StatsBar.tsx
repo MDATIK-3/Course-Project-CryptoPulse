@@ -32,8 +32,8 @@ function StatItem({ label, value, icon, color, bg }: StatItemProps) {
 export function StatsBar({ assets }: StatsBarProps) {
   const totalMarketCap = assets.reduce((sum, a) => sum + (a.market_cap || 0), 0);
   const totalVolume = assets.reduce((sum, a) => sum + (a.total_volume || 0), 0);
-  const gainers = assets.filter((a) => a.price_change_percentage_24h > 0).length;
-  const losers = assets.filter((a) => a.price_change_percentage_24h < 0).length;
+  const gainers = assets.filter((a) => (a.price_change_percentage_24h ?? 0) > 0).length;
+  const losers = assets.filter((a) => (a.price_change_percentage_24h ?? 0) < 0).length;
 
   return (
     <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 animate-fade-in">

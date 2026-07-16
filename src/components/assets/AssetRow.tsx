@@ -13,7 +13,7 @@ interface AssetRowProps {
 
 export function AssetRow({ asset, livePrice, onClick, index }: AssetRowProps) {
   const price = livePrice?.last ?? asset.current_price;
-  const change = livePrice?.changePercent ?? asset.price_change_percentage_24h;
+  const change = livePrice?.changePercent ?? asset.price_change_percentage_24h ?? 0;
 
   return (
     <tr
