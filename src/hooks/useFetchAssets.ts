@@ -9,6 +9,16 @@ interface UseFetchAssetsResult {
   refetch: () => void;
 }
 
+function friendlyError(err: unknown): string {
+  if (err instanceof Error) {
+    if (err.message.includes("429")) {
+      return "CoinGecko API rate limit reached. Retrying in a moment…";
+    }
+    return err.message;
+  }
+  return "Failed to load assets";
+}
+
 export function useFetchAssets(): UseFetchAssetsResult {
   const [assets, setAssets] = useState<Asset[]>([]);
   const [loading, setLoading] = useState(true);
@@ -21,7 +31,7 @@ export function useFetchAssets(): UseFetchAssetsResult {
       const data = await fetchAssets();
       setAssets(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load assets");
+      setError(friendlyError(err));
     } finally {
       setLoading(false);
     }
@@ -29,7 +39,8 @@ export function useFetchAssets(): UseFetchAssetsResult {
 
   useEffect(() => {
     load();
-    const interval = setInterval(load, 60000);
+    // Refresh every 90 seconds to stay within free-tier rate limits
+    const interval = setInterval(load, 90000);
     return () => clearInterval(interval);
   }, [load]);
 
