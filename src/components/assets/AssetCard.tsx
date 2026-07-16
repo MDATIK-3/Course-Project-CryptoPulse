@@ -29,6 +29,7 @@ export function AssetCard({ asset, livePrice, onClick, index }: AssetCardProps) 
             alt={asset.name}
             className="h-10 w-10 rounded-full ring-2 ring-gray-100 dark:ring-gray-800"
             loading="lazy"
+            onError={(e) => { (e.currentTarget as HTMLImageElement).src = "/fallback-coin.svg"; }}
           />
           <div>
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{asset.name}</h3>
@@ -54,7 +55,7 @@ export function AssetCard({ asset, livePrice, onClick, index }: AssetCardProps) 
       </div>
 
       <div className="mb-4 h-12 opacity-70 transition-opacity group-hover:opacity-100">
-        <SparklineChart data={asset.sparkline_in_7d?.price ?? []} />
+        <SparklineChart data={asset.sparkline_in_7d?.price ?? []} uid={asset.id} />
       </div>
 
       <div className="flex items-center justify-between border-t border-gray-50 pt-3 dark:border-gray-800">

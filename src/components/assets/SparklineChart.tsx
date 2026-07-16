@@ -1,8 +1,9 @@
 interface SparklineChartProps {
   data: number[];
+  uid: string; // Unique identifier to prevent SVG gradient ID collisions across instances
 }
 
-export function SparklineChart({ data }: SparklineChartProps) {
+export function SparklineChart({ data, uid }: SparklineChartProps) {
   if (!data || data.length < 2) return null;
 
   const isUp = data[data.length - 1] >= data[0];
@@ -23,9 +24,10 @@ export function SparklineChart({ data }: SparklineChartProps) {
   });
 
   const pathD = `M ${points.join(" L ")}`;
-
-  // Filled area path
   const areaD = `M ${padding},${height - padding} L ${points.join(" L ")} L ${width - padding},${height - padding} Z`;
+
+  // Each chart gets a globally unique gradient ID to prevent color bleed
+  const gradientId = `sg-${uid}-${isUp ? "up" : "dn"}`;
 
   return (
     <svg
@@ -36,12 +38,12 @@ export function SparklineChart({ data }: SparklineChartProps) {
       style={{ display: "block" }}
     >
       <defs>
-        <linearGradient id={`sg-${isUp ? "up" : "dn"}`} x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor={color} stopOpacity={0.2} />
           <stop offset="100%" stopColor={color} stopOpacity={0} />
         </linearGradient>
       </defs>
-      <path d={areaD} fill={`url(#sg-${isUp ? "up" : "dn"})`} />
+      <path d={areaD} fill={`url(#${gradientId})`} />
       <path d={pathD} fill="none" stroke={color} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );

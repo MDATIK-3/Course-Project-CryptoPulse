@@ -48,8 +48,8 @@ export function Dashboard({ activeTab }: DashboardProps) {
     }
 
     result.sort((a, b) => {
-      const aVal = a[sort.field] ?? 0;
-      const bVal = b[sort.field] ?? 0;
+      const aVal = ((a[sort.field] as number | null) ?? 0);
+      const bVal = ((b[sort.field] as number | null) ?? 0);
       return sort.direction === "asc" ? aVal - bVal : bVal - aVal;
     });
 

@@ -24,6 +24,8 @@ export function NotificationToast({ prices }: NotificationToastProps) {
       const pct = Math.abs(tick.changePercent);
       const key = `${tick.symbol}-${tick.changePercent > 0 ? "up" : "down"}`;
       if (pct >= THRESHOLD && !seen.has(key)) {
+        // Cap the Set size to prevent unbounded memory growth
+        if (seen.size > 500) seen.clear();
         seen.add(key);
         const id = ++notifId;
         const direction = tick.changePercent > 0 ? "up" : "down";

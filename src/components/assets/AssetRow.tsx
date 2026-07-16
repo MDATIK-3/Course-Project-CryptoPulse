@@ -32,6 +32,7 @@ export function AssetRow({ asset, livePrice, onClick, index }: AssetRowProps) {
             alt={asset.name}
             className="h-8 w-8 rounded-full"
             loading="lazy"
+            onError={(e) => { (e.currentTarget as HTMLImageElement).src = "/fallback-coin.svg"; }}
           />
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold text-gray-900 dark:text-white">{asset.name}</p>
@@ -52,7 +53,7 @@ export function AssetRow({ asset, livePrice, onClick, index }: AssetRowProps) {
         {formatLargeNumber(asset.total_volume)}
       </td>
       <td className="hidden w-32 py-4 pl-2 pr-4 xl:table-cell">
-        <SparklineChart data={asset.sparkline_in_7d?.price ?? []} />
+        <SparklineChart data={asset.sparkline_in_7d?.price ?? []} uid={asset.id} />
       </td>
     </tr>
   );

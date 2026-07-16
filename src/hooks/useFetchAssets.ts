@@ -38,6 +38,7 @@ export function useFetchAssets(): UseFetchAssetsResult {
   }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     load();
     // Refresh every 90 seconds to stay within free-tier rate limits
     const interval = setInterval(load, 90000);

@@ -43,6 +43,7 @@ export function useWebSocketPrices(): WebSocketPriceMap {
             });
           }
         } catch {
+          // Ignore malformed WebSocket frames
         }
       };
 
@@ -57,8 +58,20 @@ export function useWebSocketPrices(): WebSocketPriceMap {
 
     connect();
 
+    // Reconnect when the tab becomes visible again after being backgrounded
+    function handleVisibilityChange() {
+      if (document.visibilityState === "visible") {
+        const ws = wsRef.current;
+        if (!ws || ws.readyState === WebSocket.CLOSED || ws.readyState === WebSocket.CLOSING) {
+          connect();
+        }
+      }
+    }
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
     return () => {
       clearTimeout(reconnectTimer.current);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       wsRef.current?.close();
     };
   }, []);
