@@ -19,8 +19,12 @@ export function AssetCard({ asset, livePrice, onClick, index }: AssetCardProps) 
   return (
     <div
       onClick={onClick}
+      onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && onClick()}
+      role="button"
+      tabIndex={0}
+      aria-label={`View ${asset.name} price chart`}
       style={{ animationDelay: `${index * 40}ms` }}
-      className="group relative cursor-pointer rounded-2xl border border-gray-100 bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:border-indigo-200 hover:shadow-xl hover:shadow-indigo-500/5 dark:border-gray-800 dark:bg-gray-900 dark:hover:border-indigo-800 dark:hover:shadow-indigo-500/5 animate-fade-in"
+      className="group relative cursor-pointer rounded-2xl border border-gray-100 bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:border-indigo-200 hover:shadow-xl hover:shadow-indigo-500/5 dark:border-gray-800 dark:bg-gray-900 dark:hover:border-indigo-800 dark:hover:shadow-indigo-500/5 animate-fade-in focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
     >
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-3">

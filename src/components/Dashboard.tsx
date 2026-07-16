@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import type { Asset, SortConfig } from "../types";
 import { useFetchAssets } from "../hooks/useFetchAssets";
 import { useWebSocketPrices } from "../hooks/useWebSocketPrices";
@@ -23,8 +23,15 @@ const TAB_TITLES: Record<string, string> = {
   favorites: "Your Favorites",
 };
 
+// F-06: Format a relative "updated X ago" string
+function formatRelativeTime(date: Date): string {
+  const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+  if (seconds < 60) return `${seconds}s ago`;
+  return `${Math.floor(seconds / 60)}m ago`;
+}
+
 export function Dashboard({ activeTab }: DashboardProps) {
-  const { assets, loading, error, refetch } = useFetchAssets();
+  const { assets, loading, loadingMore, error, hasMore, lastUpdated, refetch, loadMore } = useFetchAssets();
   const wsPrices = useWebSocketPrices();
   const { isFavorite } = useFavoritesContext();
 
@@ -32,6 +39,13 @@ export function Dashboard({ activeTab }: DashboardProps) {
   const [sort, setSort] = useState<SortConfig>({ field: "market_cap_rank", direction: "asc" });
   const [view, setView] = useState<"grid" | "table">("grid");
   const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
+
+  // F-06: Relative time ticker — refreshes every 10s so "updated X ago" stays accurate
+  const [, setTick] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setTick((t) => t + 1), 10000);
+    return () => clearInterval(id);
+  }, []);
 
   const filtered = useMemo(() => {
     let result = [...assets];
@@ -58,6 +72,9 @@ export function Dashboard({ activeTab }: DashboardProps) {
 
   const displayAssets = activeTab === "dashboard" ? filtered.slice(0, 12) : filtered;
 
+  // Load More ref for intersection observer (auto-load on scroll to bottom)
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+
   if (error) {
     return <ErrorFallback message={error} onRetry={refetch} />;
   }
@@ -70,23 +87,40 @@ export function Dashboard({ activeTab }: DashboardProps) {
         <PriceChart asset={selectedAsset} onClose={() => setSelectedAsset(null)} />
       )}
 
-      {activeTab === "dashboard" && !loading && <StatsBar assets={assets} />}
+      {activeTab === "dashboard" && !loading && <StatsBar assets={assets} lastUpdated={lastUpdated} />}
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-lg font-bold text-gray-900 dark:text-white">
             {TAB_TITLES[activeTab] ?? "Assets"}
           </h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            {loading ? "Loading..." : `${displayAssets.length} ${displayAssets.length === 1 ? "asset" : "assets"}`}
-          </p>
+          <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+            {loading ? (
+              <span>Loading…</span>
+            ) : (
+              <>
+                <span>{`${displayAssets.length} ${displayAssets.length === 1 ? "asset" : "assets"}`}</span>
+                {/* F-06: Last updated indicator */}
+                {lastUpdated && (
+                  <>
+                    <span className="text-gray-300 dark:text-gray-700">·</span>
+                    <span className="text-xs text-gray-400">Updated {formatRelativeTime(lastUpdated)}</span>
+                  </>
+                )}
+              </>
+            )}
+          </div>
         </div>
+
+        {/* R-05: SortSelect and ViewToggle are wrapped together so they never split on mobile */}
         <div className="flex flex-wrap items-center gap-2">
           <div className="w-full sm:w-56">
             <SearchBar value={search} onChange={setSearch} />
           </div>
-          <SortSelect sort={sort} onChange={setSort} />
-          <ViewToggle view={view} onChange={setView} />
+          <div className="flex items-center gap-2">
+            <SortSelect sort={sort} onChange={setSort} />
+            <ViewToggle view={view} onChange={setView} />
+          </div>
         </div>
       </div>
 
@@ -128,6 +162,31 @@ export function Dashboard({ activeTab }: DashboardProps) {
           wsPrices={wsPrices}
           onSelectAsset={setSelectedAsset}
         />
+      )}
+
+      {/* F-01: Load More button — shown on "all" tab when more pages exist */}
+      {activeTab === "all" && !loading && !search.trim() && hasMore && (
+        <div ref={loadMoreRef} className="flex justify-center pt-2 pb-4">
+          <button
+            onClick={loadMore}
+            disabled={loadingMore}
+            className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-6 py-2.5 text-sm font-medium text-gray-600 transition-all hover:border-indigo-300 hover:bg-indigo-50 hover:text-indigo-600 disabled:opacity-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-indigo-700 dark:hover:bg-indigo-950/30 dark:hover:text-indigo-400"
+          >
+            {loadingMore ? (
+              <>
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-indigo-600 dark:border-gray-600 dark:border-t-indigo-400" />
+                Loading…
+              </>
+            ) : (
+              <>
+                <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+                Load More Assets
+              </>
+            )}
+          </button>
+        </div>
       )}
     </div>
   );

@@ -12,7 +12,6 @@ export const TRACKED_PAIRS = [
   "DOT/USD",
   "AVAX/USD",
   "LINK/USD",
-  "BNB/USD",
 ];
 
 export const SYMBOL_TO_GECKO_ID: Record<string, string> = {

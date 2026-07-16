@@ -18,8 +18,12 @@ export function AssetRow({ asset, livePrice, onClick, index }: AssetRowProps) {
   return (
     <tr
       onClick={onClick}
+      onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && onClick()}
+      role="button"
+      tabIndex={0}
+      aria-label={`View ${asset.name} price chart`}
       style={{ animationDelay: `${index * 25}ms` }}
-      className="group cursor-pointer border-b border-gray-50 transition-colors hover:bg-gray-50/80 dark:border-gray-800/50 dark:hover:bg-gray-800/30 animate-fade-in"
+      className="group cursor-pointer border-b border-gray-50 transition-colors hover:bg-gray-50/80 dark:border-gray-800/50 dark:hover:bg-gray-800/30 animate-fade-in focus:outline-none focus:bg-indigo-50/40 dark:focus:bg-indigo-950/20"
     >
       <td className="py-4 pl-4 pr-2">
         <FavoriteButton assetId={asset.id} />

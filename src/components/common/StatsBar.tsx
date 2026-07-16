@@ -3,6 +3,7 @@ import { formatLargeNumber } from "../../utils/formatters";
 
 interface StatsBarProps {
   assets: Asset[];
+  lastUpdated?: Date | null;
 }
 
 interface StatItemProps {
