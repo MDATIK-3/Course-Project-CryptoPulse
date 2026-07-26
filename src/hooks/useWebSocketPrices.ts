@@ -21,6 +21,10 @@ export function useWebSocketPrices(): UseWebSocketPricesResult {
     cleaningUp.current = false;
 
     function connect() {
+      if (!navigator.onLine) {
+        setStatus("offline");
+        return;
+      }
       setStatus("connecting");
       const ws = new WebSocket(KRAKEN_WS_URL);
       wsRef.current = ws;
@@ -73,6 +77,11 @@ export function useWebSocketPrices(): UseWebSocketPricesResult {
 
       ws.onclose = () => {
         if (cleaningUp.current) return;
+        // If the browser is offline, don't bother reconnecting — wait for the 'online' event
+        if (!navigator.onLine) {
+          setStatus("offline");
+          return;
+        }
         setStatus("reconnecting");
         reconnectTimer.current = setTimeout(() => {
           if (!cleaningUp.current) connect();
@@ -95,12 +104,26 @@ export function useWebSocketPrices(): UseWebSocketPricesResult {
         }
       }
     }
+
+    function handleOnline() {
+      connect();
+    }
+
+    function handleOffline() {
+      setStatus("offline");
+      wsRef.current?.close();
+    }
+
     document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
 
     return () => {
       cleaningUp.current = true;
       clearTimeout(reconnectTimer.current);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
       wsRef.current?.close();
       setStatus("offline");
     };
