@@ -78,7 +78,7 @@ CryptoPulse is a modern real-time cryptocurrency dashboard built with **React 19
 The original project brief referenced CoinCap REST endpoints. After evaluation, **CoinGecko** was chosen for the following reasons:
 
 1. **Richer data**: CoinGecko returns sparkline data, market cap rank, and OHLC history in a single response family, reducing the number of round-trips needed.
-2. **Stable free tier**: The `/coins/markets` endpoint is well-documented and rate-limited at ~30 req/min on the free tier — sufficient for a 90-second polling interval.
+2. **Stable free tier**: The `/coins/markets` endpoint is well-documented and rate-limited at ~30 req/min on the free tier sufficient for a 90-second polling interval.
 3. **WebSocket pairing**: CoinCap's WebSocket and REST APIs use different asset ID schemes. CoinGecko pairs more naturally with the Kraken WebSocket because both use standard ticker symbols (BTC, ETH, etc.).
 
 The Kraken WebSocket API is still used for **real-time sub-second price updates**, complementing CoinGecko's REST polling.
@@ -196,8 +196,6 @@ npm run preview
 npm test
 ```
 
-> **Note:** `npm test` runs Vitest in one-shot/CI mode (`vitest run`). For interactive watch mode during development, run `npx vitest` directly.
-
 ## Available Scripts
 
 | Command | Description |
@@ -216,7 +214,7 @@ The application is deployed on **Vercel** with automatic deployments from the ma
 
 **Live URL:** [https://course-project-crypto-pulse.vercel.app/](https://course-project-crypto-pulse.vercel.app/)
 
-No environment variables are required — all API calls are public and unauthenticated.
+No environment variables are required all API calls are public and unauthenticated.
 
 ---
 
