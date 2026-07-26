@@ -1,6 +1,6 @@
 interface SparklineChartProps {
   data: number[];
-  uid: string; // Unique identifier to prevent SVG gradient ID collisions across instances
+  uid: string;
 }
 
 export function SparklineChart({ data, uid }: SparklineChartProps) {
@@ -26,7 +26,6 @@ export function SparklineChart({ data, uid }: SparklineChartProps) {
   const pathD = `M ${points.join(" L ")}`;
   const areaD = `M ${padding},${height - padding} L ${points.join(" L ")} L ${width - padding},${height - padding} Z`;
 
-  // Each chart gets a globally unique gradient ID to prevent color bleed
   const gradientId = `sg-${uid}-${isUp ? "up" : "dn"}`;
 
   return (
@@ -44,7 +43,14 @@ export function SparklineChart({ data, uid }: SparklineChartProps) {
         </linearGradient>
       </defs>
       <path d={areaD} fill={`url(#${gradientId})`} />
-      <path d={pathD} fill="none" stroke={color} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d={pathD}
+        fill="none"
+        stroke={color}
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }

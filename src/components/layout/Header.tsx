@@ -1,8 +1,10 @@
 import { ThemeToggle } from "../theme/ThemeToggle";
+import type { WsConnectionStatus } from "../../hooks/useWebSocketPrices";
 
 interface HeaderProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
+  wsStatus: WsConnectionStatus;
 }
 
 const TABS = [
@@ -11,7 +13,35 @@ const TABS = [
   { id: "favorites", label: "Favorites" },
 ];
 
-export function Header({ activeTab, onTabChange }: HeaderProps) {
+const STATUS_CONFIG: Record<
+  WsConnectionStatus,
+  { label: string; dotClass: string; badgeClass: string }
+> = {
+  connecting: {
+    label: "Connecting",
+    dotClass: "bg-yellow-400 animate-pulse",
+    badgeClass: "bg-yellow-50 text-yellow-600 dark:bg-yellow-950/50 dark:text-yellow-400",
+  },
+  live: {
+    label: "Live",
+    dotClass: "bg-emerald-500 animate-pulse",
+    badgeClass: "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400",
+  },
+  reconnecting: {
+    label: "Reconnecting",
+    dotClass: "bg-orange-400 animate-pulse",
+    badgeClass: "bg-orange-50 text-orange-600 dark:bg-orange-950/50 dark:text-orange-400",
+  },
+  offline: {
+    label: "Offline",
+    dotClass: "bg-red-500",
+    badgeClass: "bg-red-50 text-red-600 dark:bg-red-950/50 dark:text-red-400",
+  },
+};
+
+export function Header({ activeTab, onTabChange, wsStatus }: HeaderProps) {
+  const { label, dotClass, badgeClass } = STATUS_CONFIG[wsStatus];
+
   return (
     <header className="sticky top-0 z-30 border-b border-gray-200/80 bg-white/70 backdrop-blur-xl dark:border-gray-800 dark:bg-gray-950/70">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-around px-4 sm:px-6 lg:px-8">
@@ -46,9 +76,12 @@ export function Header({ activeTab, onTabChange }: HeaderProps) {
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse-dot" />
-            Live
+          <div
+            className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium transition-all duration-500 ${badgeClass}`}
+            title={`WebSocket: ${label}`}
+          >
+            <span className={`h-1.5 w-1.5 rounded-full ${dotClass}`} />
+            {label}
           </div>
           <ThemeToggle />
         </div>

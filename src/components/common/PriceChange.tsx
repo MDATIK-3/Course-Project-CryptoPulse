@@ -17,7 +17,13 @@ export function PriceChange({ value, className = "" }: PriceChangeProps) {
           : "bg-red-50 text-red-600 dark:bg-red-950/50 dark:text-red-400"
       } ${className}`}
     >
-      <svg className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+      <svg
+        className="h-3 w-3"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2.5}
+        viewBox="0 0 24 24"
+      >
         <path
           strokeLinecap="round"
           strokeLinejoin="round"

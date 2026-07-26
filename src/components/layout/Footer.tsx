@@ -3,7 +3,6 @@ export function Footer() {
     <footer className="border-t border-gray-200/80 bg-white/80 backdrop-blur-xl dark:border-gray-800 dark:bg-gray-950/70">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-          {/* Brand */}
           <div className="flex items-center gap-2.5">
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-linear-to-br from-indigo-500 to-purple-600 text-white text-xs font-bold shadow-md shadow-indigo-500/20">
               CP
@@ -14,7 +13,6 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Links */}
           <div className="flex flex-wrap gap-x-6 gap-y-2">
             <a
               href="https://www.coingecko.com"
@@ -22,8 +20,18 @@ export function Footer() {
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 text-xs text-gray-400 transition-colors hover:text-indigo-500 dark:hover:text-indigo-400"
             >
-              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+              <svg
+                className="h-3.5 w-3.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                />
               </svg>
               CoinGecko API
             </a>
@@ -33,8 +41,18 @@ export function Footer() {
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 text-xs text-gray-400 transition-colors hover:text-indigo-500 dark:hover:text-indigo-400"
             >
-              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+              <svg
+                className="h-3.5 w-3.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                />
               </svg>
               Kraken WebSocket
             </a>
@@ -55,11 +73,21 @@ export function Footer() {
         <div className="mt-6 border-t border-gray-100 pt-4 dark:border-gray-800">
           <p className="text-center text-xs text-gray-400">
             © 2026 CryptoPulse. Market data provided by{" "}
-            <a href="https://www.coingecko.com" target="_blank" rel="noopener noreferrer" className="text-indigo-500 hover:underline">
+            <a
+              href="https://www.coingecko.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-indigo-500 hover:underline"
+            >
               CoinGecko
-            </a>
-            {" "}· Live prices via{" "}
-            <a href="https://www.kraken.com" target="_blank" rel="noopener noreferrer" className="text-indigo-500 hover:underline">
+            </a>{" "}
+            · Live prices via{" "}
+            <a
+              href="https://www.kraken.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-indigo-500 hover:underline"
+            >
               Kraken WebSocket
             </a>
             . Not financial advice.

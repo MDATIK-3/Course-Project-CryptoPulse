@@ -24,7 +24,6 @@ export function NotificationToast({ prices }: NotificationToastProps) {
       const pct = Math.abs(tick.changePercent);
       const key = `${tick.symbol}-${tick.changePercent > 0 ? "up" : "down"}`;
       if (pct >= THRESHOLD && !seen.has(key)) {
-        // Cap the Set size to prevent unbounded memory growth
         if (seen.size > 500) seen.clear();
         seen.add(key);
         const id = ++notifId;
@@ -57,8 +56,22 @@ export function NotificationToast({ prices }: NotificationToastProps) {
               : "bg-linear-to-r from-red-600 to-red-500"
           }`}
         >
-          <svg className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d={n.type === "up" ? "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" : "M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"} />
+          <svg
+            className="h-4 w-4 shrink-0"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d={
+                n.type === "up"
+                  ? "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                  : "M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"
+              }
+            />
           </svg>
           {n.message}
         </div>

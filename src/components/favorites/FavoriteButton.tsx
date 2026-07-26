@@ -19,11 +19,10 @@ export function FavoriteButton({ assetId, className = "" }: FavoriteButtonProps)
       aria-label={active ? "Remove from favorites" : "Add to favorites"}
     >
       <svg
-        className={`h-4 w-4 transition-all ${
-          active
-            ? "fill-amber-400 text-amber-400 scale-110"
-            : "fill-none text-gray-300 group-hover/fav:text-amber-400 dark:text-gray-600"
-        }`}
+        className={`h-4 w-4 transition-all ${active
+          ? "fill-amber-400 text-amber-400 scale-110"
+          : "fill-none text-gray-300 group-hover/fav:text-amber-400 dark:text-gray-600"
+          }`}
         stroke="currentColor"
         strokeWidth={2}
         viewBox="0 0 24 24"

@@ -6,9 +6,7 @@ function getInitialTheme(): Theme {
   try {
     const stored = localStorage.getItem(THEME_KEY) as Theme | null;
     if (stored === "dark" || stored === "light") return stored;
-  } catch {
-    // Ignore localStorage errors (SSR / private-browsing mode)
-  }
+  } catch {}
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 

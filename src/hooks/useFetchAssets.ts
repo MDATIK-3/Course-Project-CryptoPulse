@@ -34,7 +34,6 @@ export function useFetchAssets(): UseFetchAssetsResult {
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const pageRef = useRef(1);
 
-  // Load the first page (or refresh)
   const load = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -51,7 +50,6 @@ export function useFetchAssets(): UseFetchAssetsResult {
     }
   }, []);
 
-  // F-01: Load the next page and append to existing assets
   const loadMore = useCallback(async () => {
     if (loadingMore) return;
     setLoadingMore(true);
@@ -62,7 +60,6 @@ export function useFetchAssets(): UseFetchAssetsResult {
       pageRef.current = nextPage;
       setHasMore(data.length === PER_PAGE);
     } catch (err) {
-      // Silently ignore load-more failures — existing data stays visible
       console.warn("Load more failed:", err);
     } finally {
       setLoadingMore(false);
@@ -70,9 +67,8 @@ export function useFetchAssets(): UseFetchAssetsResult {
   }, [loadingMore]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     load();
-    // Refresh every 90 seconds to stay within free-tier rate limits
+
     const interval = setInterval(load, 90000);
     return () => clearInterval(interval);
   }, [load]);

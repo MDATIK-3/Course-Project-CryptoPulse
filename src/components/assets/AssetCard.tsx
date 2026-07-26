@@ -3,6 +3,7 @@ import { formatPrice, formatLargeNumber } from "../../utils/formatters";
 import { PriceChange } from "../common/PriceChange";
 import { FavoriteButton } from "../favorites/FavoriteButton";
 import { SparklineChart } from "./SparklineChart";
+import { useLiveAssetPrice } from "../../hooks/useLiveAssetPrice";
 
 interface AssetCardProps {
   asset: Asset;
@@ -12,9 +13,7 @@ interface AssetCardProps {
 }
 
 export function AssetCard({ asset, livePrice, onClick, index }: AssetCardProps) {
-  const price = livePrice?.last ?? asset.current_price;
-  const change = livePrice?.changePercent ?? asset.price_change_percentage_24h ?? 0;
-  const isUp = change >= 0;
+  const { price, change, isUp } = useLiveAssetPrice(asset, livePrice);
 
   return (
     <div
@@ -33,7 +32,9 @@ export function AssetCard({ asset, livePrice, onClick, index }: AssetCardProps) 
             alt={asset.name}
             className="h-10 w-10 rounded-full ring-2 ring-gray-100 dark:ring-gray-800"
             loading="lazy"
-            onError={(e) => { (e.currentTarget as HTMLImageElement).src = "/fallback-coin.svg"; }}
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).src = "/fallback-coin.svg";
+            }}
           />
           <div>
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{asset.name}</h3>
@@ -49,7 +50,9 @@ export function AssetCard({ asset, livePrice, onClick, index }: AssetCardProps) 
       </div>
 
       <div className="mb-1">
-        <span className={`text-xl font-bold text-gray-900 dark:text-white ${livePrice ? "animate-price-pop" : ""}`}>
+        <span
+          className={`text-xl font-bold text-gray-900 dark:text-white ${livePrice ? "animate-price-pop" : ""}`}
+        >
           {formatPrice(price)}
         </span>
       </div>
@@ -65,18 +68,21 @@ export function AssetCard({ asset, livePrice, onClick, index }: AssetCardProps) 
       <div className="flex items-center justify-between border-t border-gray-50 pt-3 dark:border-gray-800">
         <div>
           <p className="text-[10px] text-gray-400">Market Cap</p>
-          <p className="text-xs font-medium text-gray-600 dark:text-gray-300">{formatLargeNumber(asset.market_cap)}</p>
+          <p className="text-xs font-medium text-gray-600 dark:text-gray-300">
+            {formatLargeNumber(asset.market_cap)}
+          </p>
         </div>
         <div className="text-right">
           <p className="text-[10px] text-gray-400">Volume 24h</p>
-          <p className="text-xs font-medium text-gray-600 dark:text-gray-300">{formatLargeNumber(asset.total_volume)}</p>
+          <p className="text-xs font-medium text-gray-600 dark:text-gray-300">
+            {formatLargeNumber(asset.total_volume)}
+          </p>
         </div>
       </div>
 
       <div
-        className={`absolute inset-x-0 bottom-0 h-0.5 rounded-b-2xl opacity-0 transition-opacity group-hover:opacity-100 ${
-          isUp ? "bg-emerald-500" : "bg-red-500"
-        }`}
+        className={`absolute inset-x-0 bottom-0 h-0.5 rounded-b-2xl opacity-0 transition-opacity group-hover:opacity-100 ${isUp ? "bg-emerald-500" : "bg-red-500"
+          }`}
       />
     </div>
   );

@@ -1,6 +1,7 @@
 export function formatPrice(value: number | null | undefined): string {
   if (value == null || isNaN(value)) return "$0.00";
-  if (value >= 1) return `$${value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  if (value >= 1)
+    return `$${value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   return `$${value.toFixed(6)}`;
 }
 

@@ -1,9 +1,18 @@
-import { useEffect, useState } from "react";
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
+import { useState } from "react";
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  CartesianGrid,
+} from "recharts";
 import type { Asset, Timeframe } from "../../types";
 import { useAssetHistory } from "../../hooks/useAssetHistory";
 import { useThemeContext } from "../../context/ThemeContext";
 import { formatPrice, formatLargeNumber, formatDate, formatTime } from "../../utils/formatters";
+import { useKeyPress } from "../../hooks/useKeyPress";
 import { TimeframeToggle } from "./TimeframeToggle";
 import { ChartTooltip } from "./ChartTooltip";
 import { ChartSkeleton } from "../common/Skeleton";
@@ -23,17 +32,10 @@ export function PriceChart({ asset, onClose }: PriceChartProps) {
   const isUp = history.length >= 2 && history[history.length - 1].price >= history[0].price;
   const color = isUp ? "#10b981" : "#ef4444";
 
-  // F-03: Axis tick colors adapt to current theme
   const axisTickColor = theme === "dark" ? "#475569" : "#94a3b8";
   const gridColor = theme === "dark" ? "#1e293b" : "#f1f5f9";
 
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
-  }, [onClose]);
+  useKeyPress("Escape", onClose);
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center animate-fade-in-fast">
@@ -42,12 +44,13 @@ export function PriceChart({ asset, onClose }: PriceChartProps) {
       <div className="relative z-10 w-full max-w-3xl rounded-t-3xl border border-gray-200 bg-white p-5 shadow-2xl sm:m-4 sm:rounded-3xl sm:p-8 dark:border-gray-800 dark:bg-gray-900 animate-slide-up max-h-[90vh] overflow-y-auto">
         <div className="mb-6 flex items-start justify-between gap-4">
           <div className="flex items-center gap-4">
-            {/* F-07: Added onError fallback for coin image in chart modal */}
             <img
               src={asset.image}
               alt={asset.name}
               className="h-12 w-12 rounded-full ring-2 ring-gray-100 dark:ring-gray-800"
-              onError={(e) => { (e.currentTarget as HTMLImageElement).src = "/fallback-coin.svg"; }}
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).src = "/fallback-coin.svg";
+              }}
             />
             <div>
               <div className="flex items-center gap-2">
@@ -69,25 +72,36 @@ export function PriceChart({ asset, onClose }: PriceChartProps) {
             onClick={onClose}
             className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-gray-200 text-gray-400 transition-colors hover:bg-gray-50 hover:text-gray-600 dark:border-gray-700 dark:hover:bg-gray-800 dark:hover:text-gray-200"
           >
-            <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <svg
+              className="h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              viewBox="0 0 24 24"
+            >
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
 
-        {/* R-03: Stats grid now stacks on mobile, 3-col from 400px up */}
         <div className="mb-5 grid grid-cols-1 gap-2 min-[400px]:grid-cols-3 sm:gap-3">
           <div className="rounded-xl bg-gray-50 px-3 py-2.5 sm:px-4 sm:py-3 dark:bg-gray-800/50">
             <p className="text-[11px] text-gray-400">Market Cap</p>
-            <p className="mt-0.5 text-sm font-semibold text-gray-900 dark:text-white">{formatLargeNumber(asset.market_cap)}</p>
+            <p className="mt-0.5 text-sm font-semibold text-gray-900 dark:text-white">
+              {formatLargeNumber(asset.market_cap)}
+            </p>
           </div>
           <div className="rounded-xl bg-gray-50 px-3 py-2.5 sm:px-4 sm:py-3 dark:bg-gray-800/50">
             <p className="text-[11px] text-gray-400">Volume 24h</p>
-            <p className="mt-0.5 text-sm font-semibold text-gray-900 dark:text-white">{formatLargeNumber(asset.total_volume)}</p>
+            <p className="mt-0.5 text-sm font-semibold text-gray-900 dark:text-white">
+              {formatLargeNumber(asset.total_volume)}
+            </p>
           </div>
           <div className="rounded-xl bg-gray-50 px-3 py-2.5 sm:px-4 sm:py-3 dark:bg-gray-800/50">
             <p className="text-[11px] text-gray-400">Rank</p>
-            <p className="mt-0.5 text-sm font-semibold text-gray-900 dark:text-white">#{asset.market_cap_rank}</p>
+            <p className="mt-0.5 text-sm font-semibold text-gray-900 dark:text-white">
+              #{asset.market_cap_rank}
+            </p>
           </div>
         </div>
 
@@ -109,7 +123,7 @@ export function PriceChart({ asset, onClose }: PriceChartProps) {
                     <stop offset="100%" stopColor={color} stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                {/* F-03: Grid and axis colors now theme-aware */}
+
                 <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
                 <XAxis
                   dataKey="time"

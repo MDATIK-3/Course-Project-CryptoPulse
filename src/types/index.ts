@@ -34,7 +34,12 @@ export interface WebSocketPriceMap {
 
 export type Timeframe = "1" | "7" | "30";
 
-export type SortField = "market_cap_rank" | "current_price" | "market_cap" | "total_volume" | "price_change_percentage_24h";
+export type SortField =
+  | "market_cap_rank"
+  | "current_price"
+  | "market_cap"
+  | "total_volume"
+  | "price_change_percentage_24h";
 
 export type SortDirection = "asc" | "desc";
 

@@ -3,6 +3,7 @@ import { formatPrice, formatLargeNumber } from "../../utils/formatters";
 import { PriceChange } from "../common/PriceChange";
 import { FavoriteButton } from "../favorites/FavoriteButton";
 import { SparklineChart } from "./SparklineChart";
+import { useLiveAssetPrice } from "../../hooks/useLiveAssetPrice";
 
 interface AssetRowProps {
   asset: Asset;
@@ -12,8 +13,7 @@ interface AssetRowProps {
 }
 
 export function AssetRow({ asset, livePrice, onClick, index }: AssetRowProps) {
-  const price = livePrice?.last ?? asset.current_price;
-  const change = livePrice?.changePercent ?? asset.price_change_percentage_24h ?? 0;
+  const { price, change } = useLiveAssetPrice(asset, livePrice);
 
   return (
     <tr
@@ -36,15 +36,21 @@ export function AssetRow({ asset, livePrice, onClick, index }: AssetRowProps) {
             alt={asset.name}
             className="h-8 w-8 rounded-full"
             loading="lazy"
-            onError={(e) => { (e.currentTarget as HTMLImageElement).src = "/fallback-coin.svg"; }}
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).src = "/fallback-coin.svg";
+            }}
           />
           <div className="min-w-0">
-            <p className="truncate text-sm font-semibold text-gray-900 dark:text-white">{asset.name}</p>
+            <p className="truncate text-sm font-semibold text-gray-900 dark:text-white">
+              {asset.name}
+            </p>
             <p className="text-xs uppercase text-gray-400">{asset.symbol}</p>
           </div>
         </div>
       </td>
-      <td className={`px-2 py-4 text-right text-sm font-semibold tabular-nums text-gray-900 dark:text-white ${livePrice ? "animate-price-pop" : ""}`}>
+      <td
+        className={`px-2 py-4 text-right text-sm font-semibold tabular-nums text-gray-900 dark:text-white ${livePrice ? "animate-price-pop" : ""}`}
+      >
         {formatPrice(price)}
       </td>
       <td className="px-2 py-4 text-right">

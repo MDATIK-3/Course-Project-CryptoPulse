@@ -30,13 +30,27 @@ export function AssetTable({ assets, loading, wsPrices, onSelectAsset }: AssetTa
         <thead>
           <tr className="border-b border-gray-100 dark:border-gray-800">
             <th className="w-12 py-3 pl-4 pr-2" />
-            <th className="px-2 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-gray-400">#</th>
-            <th className="px-2 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-gray-400">Name</th>
-            <th className="px-2 py-3 text-right text-[11px] font-semibold uppercase tracking-wider text-gray-400">Price</th>
-            <th className="px-2 py-3 text-right text-[11px] font-semibold uppercase tracking-wider text-gray-400">24h</th>
-            <th className="hidden px-2 py-3 text-right text-[11px] font-semibold uppercase tracking-wider text-gray-400 md:table-cell">Market Cap</th>
-            <th className="hidden px-2 py-3 text-right text-[11px] font-semibold uppercase tracking-wider text-gray-400 lg:table-cell">Volume</th>
-            <th className="hidden px-2 py-3 text-right text-[11px] font-semibold uppercase tracking-wider text-gray-400 xl:table-cell">7d Chart</th>
+            <th className="px-2 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+              #
+            </th>
+            <th className="px-2 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+              Name
+            </th>
+            <th className="px-2 py-3 text-right text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+              Price
+            </th>
+            <th className="px-2 py-3 text-right text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+              24h
+            </th>
+            <th className="hidden px-2 py-3 text-right text-[11px] font-semibold uppercase tracking-wider text-gray-400 md:table-cell">
+              Market Cap
+            </th>
+            <th className="hidden px-2 py-3 text-right text-[11px] font-semibold uppercase tracking-wider text-gray-400 lg:table-cell">
+              Volume
+            </th>
+            <th className="hidden px-2 py-3 text-right text-[11px] font-semibold uppercase tracking-wider text-gray-400 xl:table-cell">
+              7d Chart
+            </th>
           </tr>
         </thead>
         <tbody>

@@ -2,17 +2,31 @@ import { useEffect, useRef, useState } from "react";
 import type { WebSocketPriceMap } from "../types";
 import { KRAKEN_WS_URL, TRACKED_PAIRS } from "../utils/constants";
 
-export function useWebSocketPrices(): WebSocketPriceMap {
+export type WsConnectionStatus = "connecting" | "live" | "reconnecting" | "offline";
+
+export interface UseWebSocketPricesResult {
+  prices: WebSocketPriceMap;
+  status: WsConnectionStatus;
+}
+
+export function useWebSocketPrices(): UseWebSocketPricesResult {
   const [prices, setPrices] = useState<WebSocketPriceMap>({});
+  const [status, setStatus] = useState<WsConnectionStatus>("connecting");
   const wsRef = useRef<WebSocket | null>(null);
   const reconnectTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
+  const cleaningUp = useRef(false);
+
   useEffect(() => {
+    cleaningUp.current = false;
+
     function connect() {
+      setStatus("connecting");
       const ws = new WebSocket(KRAKEN_WS_URL);
       wsRef.current = ws;
 
       ws.onopen = () => {
+        setStatus("live");
         ws.send(
           JSON.stringify({
             method: "subscribe",
@@ -23,42 +37,56 @@ export function useWebSocketPrices(): WebSocketPriceMap {
 
       ws.onmessage = (event) => {
         try {
-          const msg = JSON.parse(event.data);
+          const msg = JSON.parse(event.data) as {
+            channel?: string;
+            type?: string;
+            data?: Array<{
+              symbol?: string;
+              last?: number;
+              volume?: number;
+              bid?: number;
+              ask?: number;
+              change?: number;
+              change_pct?: number;
+            }>;
+          };
           if (msg.channel === "ticker" && msg.type === "update" && Array.isArray(msg.data)) {
             setPrices((prev) => {
               const next = { ...prev };
-              for (const tick of msg.data) {
-                const symbol = tick.symbol?.replace("/", "") || "";
+              for (const tick of msg.data!) {
+                const symbol = tick.symbol?.replace("/", "") ?? "";
                 next[symbol] = {
-                  symbol: tick.symbol,
-                  last: tick.last,
-                  volume: tick.volume,
-                  bid: tick.bid,
-                  ask: tick.ask,
-                  change: tick.change,
-                  changePercent: tick.change_pct,
+                  symbol: tick.symbol ?? "",
+                  last: tick.last ?? 0,
+                  volume: tick.volume ?? 0,
+                  bid: tick.bid ?? 0,
+                  ask: tick.ask ?? 0,
+                  change: tick.change ?? 0,
+                  changePercent: tick.change_pct ?? 0,
                 };
               }
               return next;
             });
           }
-        } catch {
-          // Ignore malformed WebSocket frames
-        }
+        } catch {}
       };
 
       ws.onclose = () => {
-        reconnectTimer.current = setTimeout(connect, 3000);
+        if (cleaningUp.current) return;
+        setStatus("reconnecting");
+        reconnectTimer.current = setTimeout(() => {
+          if (!cleaningUp.current) connect();
+        }, 3000);
       };
 
       ws.onerror = () => {
+        setStatus("offline");
         ws.close();
       };
     }
 
     connect();
 
-    // Reconnect when the tab becomes visible again after being backgrounded
     function handleVisibilityChange() {
       if (document.visibilityState === "visible") {
         const ws = wsRef.current;
@@ -70,11 +98,13 @@ export function useWebSocketPrices(): WebSocketPriceMap {
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
+      cleaningUp.current = true;
       clearTimeout(reconnectTimer.current);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       wsRef.current?.close();
+      setStatus("offline");
     };
   }, []);
 
-  return prices;
+  return { prices, status };
 }

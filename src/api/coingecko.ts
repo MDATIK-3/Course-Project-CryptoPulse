@@ -5,7 +5,6 @@ async function fetchWithRetry(url: string, retries = 3, delayMs = 1500): Promise
   for (let attempt = 0; attempt <= retries; attempt++) {
     const res = await fetch(url);
     if (res.status === 429 && attempt < retries) {
-      // Rate limited — wait with exponential backoff then retry
       const wait = delayMs * Math.pow(2, attempt);
       await new Promise((resolve) => setTimeout(resolve, wait));
       continue;

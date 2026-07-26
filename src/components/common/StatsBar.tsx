@@ -18,7 +18,13 @@ function StatItem({ label, value, icon, color, bg }: StatItemProps) {
   return (
     <div className="flex items-center gap-3 rounded-2xl border border-gray-100 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
       <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${bg}`}>
-        <svg className={`h-5 w-5 ${color}`} fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+        <svg
+          className={`h-5 w-5 ${color}`}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={1.5}
+          viewBox="0 0 24 24"
+        >
           <path strokeLinecap="round" strokeLinejoin="round" d={icon} />
         </svg>
       </div>
